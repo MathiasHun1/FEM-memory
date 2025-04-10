@@ -1,0 +1,69 @@
+$breakpoint-small: 35rem;
+
+@mixin button-menu-big() {
+  background-color: hsl(var(--clr-orange-500));
+  color: hsl(var(--clr-slate-100));
+  font-size: var(--fs-button-L);
+  font-weight: var(--fw-bold);
+  padding-block: 0.8rem;
+  border-radius: 35px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: hsl(var(--clr-orange-500), 0.8);
+  }
+}
+
+@mixin button-menu-selection {
+  background-color: hsl(var(--clr-greyish-blue-400));
+  color: hsl(var(--clr-slate-100));
+  font-size: var(--fs-button-M);
+  font-weight: var(--fw-bold);
+  padding-block: 0.5rem;
+  border-radius: 28px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+
+  &:hover {
+    background-color: hsla(var(--clr-greyish-blue-600));
+  }
+}
+
+@mixin button-primary {
+  background-color: hsl(var(--clr-orange-500));
+  color: hsl(var(--clr-slate-100));
+  font-size: var(--fs-button-S);
+  font-weight: var(--fw-bold);
+  border-radius: 26px;
+  border: none;
+  padding-block: 0.5rem;
+  padding-inline: 26px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: hsla(var(--clr-orange-500), 0.8);
+  }
+}
+
+@mixin button-secondary {
+  background-color: hsl(var(--clr-greyish-blue-100));
+  color: hsl(var(--clr-blue-800));
+  font-size: var(--fs-button-S);
+  font-weight: var(--fw-bold);
+  border-radius: 26px;
+  border: none;
+  padding-block: 0.5rem;
+  padding-inline: 26px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: hsla(var(--clr-blue-500), 0.8);
+    color: hsl(var(--clr-slate-100));
+  }
+}
+
+@mixin wrapper {
+  padding-inline: 24px;
+}

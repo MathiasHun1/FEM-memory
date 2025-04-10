@@ -1,0 +1,64 @@
+@use './abstractions' as *;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+#root {
+  font-family: var(--ff-base);
+}
+
+:root {
+  // Colors
+  --clr-slate-100: 0, 0%, 99%;
+  --clr-slate-200: 0, 0%, 95%;
+
+  --clr-greyish-blue-100: 203, 25%, 90%;
+  --clr-greyish-blue-400: 203, 28%, 79%;
+  --clr-greyish-blue-500: 203, 22%, 55%;
+  --clr-greyish-blue-600: 203, 37%, 55%;
+
+  --clr-blue-500: 205, 37%, 55%;
+  --clr-blue-800: 205, 30%, 27%;
+  --clr-blue-900: 206, 45%, 15%;
+
+  --clr-orange-500: 37, 98%, 54%;
+
+  // Fonts
+  --ff-base: 'Atkinson Hyperlegible';
+  --fw-regular: 400;
+  --fw-bold: 700;
+
+  --fs-gameNum-big: calc(56rem / 16);
+  --fs-gameNum-small: calc(44rem / 16);
+  --fs-h1: calc(48rem / 16);
+  --fs-h2: calc(32rem / 16);
+  --fs-h3: calc(20rem / 16);
+  --fs-body: calc(18rem / 16);
+
+  --fs-button-L: calc(32rem / 16);
+  --fs-button-M: calc(26rem / 16);
+  --fs-button-S: calc(20rem / 16);
+}
+
+@media (max-width: $breakpoint-small) {
+  :root {
+    --fs-gameNum-big: calc(40rem / 16);
+    --fs-gameNum-small: calc(24rem / 16);
+    --fs-h1: calc(24rem / 16);
+    --fs-h2: calc(20rem / 16);
+    --fs-h3: calc(15rem / 16);
+    --fs-body: calc(15rem / 16);
+
+    --fs-button-L: calc(18rem / 16);
+    --fs-button-M: calc(16rem / 16);
+    --fs-button-S: calc(16rem / 16);
+  }
+}
+
+.app {
+  min-height: 100%;
+  background-color: hsl(var(--clr-red));
+}

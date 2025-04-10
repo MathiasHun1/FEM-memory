@@ -1,0 +1,39 @@
+@use './../styles/abstractions' as *;
+
+.wrapper {
+  padding-inline: 2rem;
+  font-family: var(--ff-base);
+  background-color: hsl(var(--clr-blue-900));
+  min-height: 100vh;
+}
+
+.container {
+  background-color: hsl(var(--clr-slate-100));
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  margin-inline: auto;
+  max-width: 500px;
+}
+
+.sub_title {
+  margin-bottom: 0.5rem;
+}
+
+.menu_big {
+  @include button-menu-big;
+  width: 100%;
+}
+
+.menu_select {
+  @include button-menu-selection;
+}
+
+.menu_restart {
+  @include button-primary;
+}
+
+.menu_new {
+  @include button-secondary;
+}

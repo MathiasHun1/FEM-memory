@@ -1,0 +1,67 @@
+@use '../abstractions' as *;
+
+.container {
+  font-weight: var(--fw-bold);
+  min-height: 100%;
+  background-color: hsl(var(--clr-blue-900));
+  display: grid;
+  grid-template-rows: 0.3fr 1fr;
+  justify-items: center;
+}
+
+.header {
+  align-self: end;
+}
+
+.main {
+  @include wrapper;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: fit-content;
+}
+
+.card {
+  background-color: hsl(var(--clr-slate-100));
+  color: white;
+  width: 100%;
+  max-width: 41rem;
+  margin-top: clamp(0px, 8vh, 80px);
+  padding: 1.5rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  @media (min-width: $breakpoint-small) {
+    padding: 3.5rem;
+  }
+}
+
+.label {
+  display: block;
+  color: hsl(var(--clr-greyish-blue-500));
+  font-size: var(--fs-h3);
+  margin-bottom: 0.675rem;
+}
+
+.input_wrapper {
+  display: flex;
+  gap: 10px;
+
+  @media (min-width: $breakpoint-small) {
+    gap: 30px;
+  }
+}
+
+.button_selection {
+  @include button-menu-selection;
+
+  &.button_selection_active {
+    background-color: hsla(var(--clr-blue-800));
+  }
+}
+
+.button_start {
+  @include button-menu-big;
+}
