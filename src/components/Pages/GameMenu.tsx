@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/components/GameMenu.module.scss';
 import logo from '/images/logo-white.svg';
+import { board } from '../../utils/gameboard';
+import { Field } from '../../types/gameTypes';
 
 const GameMenu = () => {
   const [theme, setTheme] = useState<'numbers' | 'icons'>('numbers');
   const [players, setPlayers] = useState('1');
   const [gridSize, setGridSize] = useState('4');
+  const [game, setGame] = useState<Field[] | null>(null);
+
+  useEffect(() => {
+    console.log(game);
+  }, [game]);
 
   const handlePlayerCount = (e: React.MouseEvent<HTMLButtonElement>) => {
     const button = e.target as HTMLButtonElement;
@@ -116,7 +123,12 @@ const GameMenu = () => {
             </div>
           </div>
 
-          <button className={styles.button_start}>Start Game</button>
+          <button
+            className={styles.button_start}
+            onClick={() => setGame(board)}
+          >
+            Start Game
+          </button>
         </div>
       </main>
     </div>
