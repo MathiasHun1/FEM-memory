@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/components/GameMenu.module.scss';
 import logo from '/images/logo-white.svg';
-import { board } from '../../utils/gameboard';
-import { Field } from '../../types/gameTypes';
+import { useNavigate } from 'react-router';
 
 const GameMenu = () => {
   const [theme, setTheme] = useState<'numbers' | 'icons'>('numbers');
   const [players, setPlayers] = useState('1');
   const [gridSize, setGridSize] = useState('4');
-  const [game, setGame] = useState<Field[] | null>(null);
-
-  useEffect(() => {
-    console.log(game);
-  }, [game]);
+  const navigate = useNavigate();
 
   const handlePlayerCount = (e: React.MouseEvent<HTMLButtonElement>) => {
     const button = e.target as HTMLButtonElement;
     if (button.dataset.value) {
       setPlayers(button.dataset.value);
     }
+  };
+
+  const handleGameStart = () => {
+    navigate('/game/singlePlayer');
   };
 
   return (
@@ -123,10 +122,7 @@ const GameMenu = () => {
             </div>
           </div>
 
-          <button
-            className={styles.button_start}
-            onClick={() => setGame(board)}
-          >
+          <button className={styles.button_start} onClick={handleGameStart}>
             Start Game
           </button>
         </div>

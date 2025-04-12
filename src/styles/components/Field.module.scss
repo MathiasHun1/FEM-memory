@@ -1,0 +1,17 @@
+.field {
+  background-color: hsl(var(--clr-blue-800));
+  color: hsl(var(--clr-slate-100));
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: calc(40rem / 16);
+  cursor: pointer;
+}
+
+.active {
+  background-color: hsl(var(--clr-orange-500));
+}
+
+.found {
+  background-color: hsl(var(--clr-greyish-blue-400));
+}

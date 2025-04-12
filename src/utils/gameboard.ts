@@ -1,7 +1,7 @@
 import { Field } from '../types/gameTypes';
 
 // create an array of fields
-const createFields = () => {
+export const createFields = () => {
   const fields: Field[] = [];
   const valuesArray: number[] = [];
   const usedPositions: number[] = [];
@@ -45,8 +45,11 @@ const createRandomPos = (maxValue: number, usedPositions: number[]) => {
   return calculated;
 };
 
-export const board = {
-  table: createFields(),
-  moves: 0,
-  elapsedTime: 0,
+export const createGame = (mode, size) => {
+  return {
+    table: createFields(),
+    roundState: 'first',
+    moves: 0,
+    elapsedTime: 0,
+  };
 };
