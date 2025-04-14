@@ -1,13 +1,24 @@
 import { useReducer, createContext, ReactNode } from 'react';
-import { createGame } from '../utils/gameboard';
-import { Game, GameAction } from '../types/gameTypes';
+import { createSinglePlayer } from '../utils/gameboard';
+import { GameSingle, GameAction } from '../types/gameTypes';
 
-const gameReducer = (state: Game | null, action: GameAction): Game | null => {
+const gameReducer = (
+  state: GameSingle | null,
+  action: GameAction
+): GameSingle | null => {
   switch (action.type) {
-    case 'init': {
+    case 'initSingle': {
       const mode = action.payload.mode;
       const size = action.payload.size;
-      const newGame = createGame(mode, size);
+      const newGame = createSinglePlayer(mode, size);
+      return newGame;
+    }
+
+    case 'initMulty': {
+      const mode = action.payload.mode;
+      const size = action.payload.size;
+      const playersCount = action.payload.players;
+      const newGame = createMultyPlayer(mode, size, playersCount);
       return newGame;
     }
 
@@ -103,7 +114,7 @@ const gameReducer = (state: Game | null, action: GameAction): Game | null => {
 };
 
 interface GameContextType {
-  game: Game | null;
+  game: GameSingle | null;
   dispatch: React.Dispatch<GameAction>;
 }
 

@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import GameMenu from './components/Pages/GameMenu';
 import SinglePlayer from './components/Pages/SinglePlayer';
+import GameplayLayout from './components/Pages/GameplayLayout';
 
 function App() {
   const [size, setSize] = useState<4 | 6>(4);
@@ -12,13 +13,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/menu" />} />
         <Route
-          path="/menu"
+          path="menu"
           element={<GameMenu size={size} setSize={setSize} />}
         />
-        <Route
-          path="/game/singleplayer"
-          element={<SinglePlayer size={size} />}
-        />
+        <Route path="playing">
+          <Route element={<GameplayLayout />}>
+            <Route path="singleplayer" element={<SinglePlayer />} />
+            {/* <Route path="/multyplayer" element={<MultyPlayer />} /> */}
+          </Route>
+        </Route>
       </Routes>
     </>
   );

@@ -11,20 +11,22 @@ interface Props {
 
 const GameMenu = ({ size, setSize }: Props) => {
   const [mode, setMode] = useState<'numbers' | 'icons'>('numbers');
-  const [players, setPlayers] = useState('1');
+  const [players, setPlayers] = useState(1);
   const navigate = useNavigate();
   const { dispatch } = useContext(GameContext)!;
 
   const handlePlayerCount = (e: React.MouseEvent<HTMLButtonElement>) => {
     const button = e.target as HTMLButtonElement;
     if (button.dataset.value) {
-      setPlayers(button.dataset.value);
+      setPlayers(Number(button.dataset.value));
     }
   };
 
   const handleGameStart = () => {
-    navigate('/game/singlePlayer');
-    dispatch({ type: 'init', payload: { mode: mode, size: size } });
+    if (players < 2) {
+      navigate('/playing/singleplayer');
+      dispatch({ type: 'initSingle', payload: { mode: mode, size: size } });
+    }
   };
 
   return (
@@ -68,7 +70,7 @@ const GameMenu = ({ size, setSize }: Props) => {
             <div className={styles.input_wrapper}>
               <button
                 className={`${styles.button_selection} ${
-                  players === '1' ? styles.button_selection_active : ''
+                  players === 1 ? styles.button_selection_active : ''
                 }`}
                 onClick={handlePlayerCount}
                 data-value="1"
@@ -77,7 +79,7 @@ const GameMenu = ({ size, setSize }: Props) => {
               </button>
               <button
                 className={`${styles.button_selection} ${
-                  players === '2' ? styles.button_selection_active : ''
+                  players === 2 ? styles.button_selection_active : ''
                 }`}
                 data-value="2"
                 onClick={handlePlayerCount}
@@ -86,7 +88,7 @@ const GameMenu = ({ size, setSize }: Props) => {
               </button>
               <button
                 className={`${styles.button_selection} ${
-                  players === '3' ? styles.button_selection_active : ''
+                  players === 3 ? styles.button_selection_active : ''
                 }`}
                 data-value="3"
                 onClick={handlePlayerCount}
@@ -95,7 +97,7 @@ const GameMenu = ({ size, setSize }: Props) => {
               </button>
               <button
                 className={`${styles.button_selection} ${
-                  players === '4' ? styles.button_selection_active : ''
+                  players === 4 ? styles.button_selection_active : ''
                 }`}
                 data-value="4"
                 onClick={handlePlayerCount}

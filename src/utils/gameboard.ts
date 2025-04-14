@@ -1,4 +1,4 @@
-import { Field, Game } from '../types/gameTypes';
+import { Field, GameSingle } from '../types/gameTypes';
 import anchor from '../assets/anchor.svg';
 import bug from '../assets/bug.svg';
 import car from '../assets/car.svg';
@@ -84,10 +84,10 @@ const createRandomPos = (maxValue: number, usedPositions: number[]) => {
   return calculated;
 };
 
-export const createGame = (
+export const createSinglePlayer = (
   mode: 'numbers' | 'icons',
   size: 4 | 6
-): Game | null => {
+): GameSingle | null => {
   return {
     table: createFields(mode, size),
     roundState: 'first',
