@@ -6,6 +6,10 @@
   place-items: center;
   font-size: calc(40rem / 16);
   cursor: pointer;
+
+  & img {
+    width: 50%;
+  }
 }
 
 .active {

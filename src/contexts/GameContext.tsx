@@ -1,22 +1,20 @@
-import { useReducer, createContext } from 'react';
-import { createFields } from '../utils/gameboard';
-import { Field } from '../types/gameTypes';
+import { useReducer, createContext, ReactNode } from 'react';
+import { createGame } from '../utils/gameboard';
+import { Game, GameAction } from '../types/gameTypes';
 
-interface Game {
-  table: Field[];
-  roundState: 'first' | 'last';
-  moves: number;
-}
-
-const initialState: Game = {
-  table: createFields(),
-  roundState: 'first',
-  moves: 0,
-};
-
-const gameReducer = (state: Game, action: any) => {
+const gameReducer = (state: Game | null, action: GameAction): Game | null => {
   switch (action.type) {
+    case 'init': {
+      const mode = action.payload.mode;
+      const size = action.payload.size;
+      const newGame = createGame(mode, size);
+      return newGame;
+    }
+
     case 'setActive': {
+      if (!state) {
+        throw new Error('Game state is null');
+      }
       const stateCopy = { ...state, table: [...state.table] };
       const id = action.payload.id;
       const clickedField = stateCopy.table.find(
@@ -31,6 +29,9 @@ const gameReducer = (state: Game, action: any) => {
     }
 
     case 'setFound': {
+      if (!state) {
+        throw new Error('Game state is null');
+      }
       const stateCopy = { ...state, table: [...state.table] };
 
       const id = action.payload.id;
@@ -47,12 +48,19 @@ const gameReducer = (state: Game, action: any) => {
     }
 
     case 'incrementMoves': {
+      if (!state) {
+        throw new Error('Game state is null');
+      }
+
       const stateCopy = { ...state, table: [...state.table] };
       stateCopy.moves++;
       return stateCopy;
     }
 
     case 'setAllInactive': {
+      if (!state) {
+        throw new Error('Game state is null');
+      }
       const stateCopy = { ...state, table: [...state.table] };
       stateCopy.table.forEach((field) => {
         if (field.isActive) {
@@ -62,6 +70,9 @@ const gameReducer = (state: Game, action: any) => {
       return stateCopy;
     }
     case 'toggleRoundState': {
+      if (!state) {
+        throw new Error('Game state is null');
+      }
       const stateCopy = { ...state, table: [...state.table] };
       if (stateCopy.roundState === 'first') {
         stateCopy.roundState = 'last';
@@ -72,6 +83,9 @@ const gameReducer = (state: Game, action: any) => {
     }
 
     case 'resetGame': {
+      if (!state) {
+        throw new Error('Game state is null');
+      }
       const stateCopy = { ...state, table: [...state.table] };
       stateCopy.table.forEach((field) => {
         field.isActive = false;
@@ -83,14 +97,20 @@ const gameReducer = (state: Game, action: any) => {
     }
 
     default:
+      return null;
       break;
   }
 };
 
-export const GameContext = createContext(null);
+interface GameContextType {
+  game: Game | null;
+  dispatch: React.Dispatch<GameAction>;
+}
 
-export default function ContextProvider({ children }) {
-  const [game, dispatch] = useReducer(gameReducer, initialState);
+export const GameContext = createContext<GameContextType | null>(null);
+
+export default function ContextProvider({ children }: { children: ReactNode }) {
+  const [game, dispatch] = useReducer(gameReducer, null);
 
   return (
     <GameContext.Provider value={{ game, dispatch }}>

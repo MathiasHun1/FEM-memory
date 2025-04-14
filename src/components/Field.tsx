@@ -3,9 +3,9 @@ import styles from '../styles/components/Field.module.scss';
 interface Props {
   isActive: boolean;
   isFound: boolean;
-  value: number;
+  value: string | number;
   id: number;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLSpanElement>) => void;
 }
 
 const Field = ({ isActive, isFound, value, id, onClick }: Props) => {
@@ -13,11 +13,17 @@ const Field = ({ isActive, isFound, value, id, onClick }: Props) => {
     isFound ? styles.found : ''
   }`;
 
-  console.log('id: ', isFound);
+  const renderValue = () => {
+    if (typeof value === 'number') {
+      return value;
+    } else {
+      return <img src={value} alt="" />;
+    }
+  };
 
   return (
     <span className={style} data-id={id} onClick={onClick}>
-      {isActive || isFound ? value : ''}
+      {isActive || isFound ? renderValue() : ''}
     </span>
   );
 };

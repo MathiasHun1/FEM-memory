@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styles from '../../styles/components/GameMenu.module.scss';
 import logo from '/images/logo-white.svg';
 import { useNavigate } from 'react-router';
+import { GameContext } from '../../contexts/GameContext';
 
-const GameMenu = () => {
-  const [theme, setTheme] = useState<'numbers' | 'icons'>('numbers');
+interface Props {
+  size: 4 | 6;
+  setSize: React.Dispatch<4 | 6>;
+}
+
+const GameMenu = ({ size, setSize }: Props) => {
+  const [mode, setMode] = useState<'numbers' | 'icons'>('numbers');
   const [players, setPlayers] = useState('1');
-  const [gridSize, setGridSize] = useState('4');
   const navigate = useNavigate();
+  const { dispatch } = useContext(GameContext)!;
 
   const handlePlayerCount = (e: React.MouseEvent<HTMLButtonElement>) => {
     const button = e.target as HTMLButtonElement;
@@ -18,6 +24,7 @@ const GameMenu = () => {
 
   const handleGameStart = () => {
     navigate('/game/singlePlayer');
+    dispatch({ type: 'init', payload: { mode: mode, size: size } });
   };
 
   return (
@@ -32,22 +39,22 @@ const GameMenu = () => {
         <div className={styles.card}>
           <div className={styles.input_group}>
             <label htmlFor="" className={styles.label}>
-              Select Theme
+              Select mode
             </label>
             <div className={styles.input_wrapper}>
               <button
                 className={`${styles.button_selection} ${
-                  theme === 'numbers' ? styles.button_selection_active : ''
+                  mode === 'numbers' ? styles.button_selection_active : ''
                 }`}
-                onClick={() => setTheme('numbers')}
+                onClick={() => setMode('numbers')}
               >
                 Numbers
               </button>
               <button
                 className={`${styles.button_selection} ${
-                  theme === 'icons' ? styles.button_selection_active : ''
+                  mode === 'icons' ? styles.button_selection_active : ''
                 }`}
-                onClick={() => setTheme('icons')}
+                onClick={() => setMode('icons')}
               >
                 Icons
               </button>
@@ -105,17 +112,17 @@ const GameMenu = () => {
             <div className={styles.input_wrapper}>
               <button
                 className={`${styles.button_selection} ${
-                  gridSize === '4' ? styles.button_selection_active : ''
+                  size === 4 ? styles.button_selection_active : ''
                 }`}
-                onClick={() => setGridSize('4')}
+                onClick={() => setSize(4)}
               >
                 4x4
               </button>
               <button
                 className={`${styles.button_selection} ${
-                  gridSize === '6' ? styles.button_selection_active : ''
+                  size === 6 ? styles.button_selection_active : ''
                 }`}
-                onClick={() => setGridSize('6')}
+                onClick={() => setSize(6)}
               >
                 6x6
               </button>

@@ -2,34 +2,12 @@ import { useNavigate } from 'react-router';
 import { GameContext } from '../../contexts/GameContext';
 import styles from '../../styles/components/SinglePlayer.module.scss';
 import logo from '/images/logo-dark.svg';
-import { useContext, useEffect } from 'react';
-import Field from '../Field';
+import { useContext } from 'react';
+import Table from '../Table';
 
-const SinglePlayer = () => {
-  const { game, dispatch } = useContext(GameContext);
+const SinglePlayer = ({ size }: { size: 4 | 6 }) => {
+  const { game, dispatch } = useContext(GameContext)!;
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const activeFields = game.table.filter((field) => field.isActive);
-    if (activeFields.length === 2) {
-      if (activeFields[0].value !== activeFields[1].value) {
-        dispatch({ type: 'setAllInactive' });
-      }
-
-      if (activeFields[0].value === activeFields[1].value) {
-        activeFields.map((field) =>
-          dispatch({ type: 'setFound', payload: { id: field.position } })
-        );
-      }
-    }
-  }, [game]);
-
-  const handleClick = (e) => {
-    const position = Number(e.target.dataset.id);
-    dispatch({ type: 'setActive', payload: { id: position } });
-    dispatch({ type: 'toggleRoundState' });
-    dispatch({ type: 'incrementMoves' });
-  };
 
   const handleRestart = () => {
     dispatch({ type: 'resetGame' });
@@ -50,18 +28,8 @@ const SinglePlayer = () => {
       </header>
 
       <main className={styles.main}>
-        <div className={styles.table}>
-          {game.table.map((field, index) => (
-            <Field
-              key={index}
-              id={index}
-              onClick={handleClick}
-              isActive={field.isActive}
-              isFound={field.isFound}
-              value={field.value}
-            />
-          ))}
-        </div>
+        <Table size={size} />
+
         <div className={styles.meta_wrapper}>
           <div className={styles.meta_element}>
             <h3 className={styles.meta_text}>Time</h3>
@@ -69,7 +37,7 @@ const SinglePlayer = () => {
           </div>
           <div className={styles.meta_element}>
             <h3 className={styles.meta_text}>Moves</h3>
-            <p className={styles.meta_value}>{game.moves}</p>
+            <p className={styles.meta_value}>{game?.moves}</p>
           </div>
         </div>
       </main>

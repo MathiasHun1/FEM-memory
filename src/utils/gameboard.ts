@@ -1,20 +1,59 @@
-import { Field } from '../types/gameTypes';
+import { Field, Game } from '../types/gameTypes';
+import anchor from '../assets/anchor.svg';
+import bug from '../assets/bug.svg';
+import car from '../assets/car.svg';
+import flask from '../assets/flask.svg';
+import futbol from '../assets/futbol.svg';
+import hand from '../assets/hand.svg';
+import moon from '../assets/moon.svg';
+import snow from '../assets/snow.svg';
+import sterling from '../assets/sterling.svg';
+import sun from '../assets/sun.svg';
+import eye from '../assets/eye.svg';
+import face from '../assets/face.svg';
+import keyboard from '../assets/keyboard.svg';
+import registered from '../assets/registered.svg';
+import star from '../assets/star.svg';
+import trash from '../assets/trash.svg';
+import ghost from '../assets/ghost.svg';
+import money from '../assets/money.svg';
+
+const values = {
+  numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+  icons: [
+    anchor,
+    bug,
+    car,
+    eye,
+    face,
+    flask,
+    futbol,
+    hand,
+    moon,
+    snow,
+    sterling,
+    sun,
+    keyboard,
+    registered,
+    star,
+    trash,
+    ghost,
+    money,
+  ],
+};
 
 // create an array of fields
-export const createFields = () => {
+export const createFields = (mode: 'numbers' | 'icons', size: 4 | 6) => {
   const fields: Field[] = [];
-  const valuesArray: number[] = [];
   const usedPositions: number[] = [];
-
-  //fill values array with numbers 1-16
-  for (let i = 0; i < 8; i++) {
-    valuesArray.push(i + 1);
-  }
+  const valuesArray = values[mode].filter((v, index) => {
+    if (index < (size * size) / 2) return v;
+  });
 
   // map the value array and create 2 field for each one, with a random poisition
   valuesArray.map((value) => {
     for (let i = 0; i < 2; i++) {
-      const randomPosition = createRandomPos(16, usedPositions);
+      const randomPosition = createRandomPos(size * size, usedPositions);
       usedPositions.push(randomPosition);
 
       const field: Field = {
@@ -31,7 +70,7 @@ export const createFields = () => {
   return fields.sort((a, b) => a.position - b.position);
 };
 
-// util to reate a random position number
+// util to create a random position number
 const createRandomPos = (maxValue: number, usedPositions: number[]) => {
   if (usedPositions.length >= maxValue) {
     throw new Error('table is already filled');
@@ -45,9 +84,12 @@ const createRandomPos = (maxValue: number, usedPositions: number[]) => {
   return calculated;
 };
 
-export const createGame = (mode, size) => {
+export const createGame = (
+  mode: 'numbers' | 'icons',
+  size: 4 | 6
+): Game | null => {
   return {
-    table: createFields(),
+    table: createFields(mode, size),
     roundState: 'first',
     moves: 0,
     elapsedTime: 0,
