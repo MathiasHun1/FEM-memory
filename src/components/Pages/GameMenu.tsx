@@ -23,9 +23,12 @@ const GameMenu = ({ size, setSize }: Props) => {
   };
 
   const handleGameStart = () => {
-    if (players < 2) {
+    dispatch({ type: 'initGame', payload: { mode: mode, size, players } });
+
+    if (players === 1) {
       navigate('/playing/singleplayer');
-      dispatch({ type: 'initSingle', payload: { mode: mode, size: size } });
+    } else {
+      navigate('/playing/multiplayer');
     }
   };
 

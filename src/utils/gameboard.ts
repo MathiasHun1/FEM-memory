@@ -1,4 +1,4 @@
-import { Field, GameSingle } from '../types/gameTypes';
+import { Field, Game, Player } from '../types/gameTypes';
 import anchor from '../assets/anchor.svg';
 import bug from '../assets/bug.svg';
 import car from '../assets/car.svg';
@@ -43,7 +43,7 @@ const values = {
 };
 
 // create an array of fields
-export const createFields = (mode: 'numbers' | 'icons', size: 4 | 6) => {
+const createFields = (mode: 'numbers' | 'icons', size: 4 | 6) => {
   const fields: Field[] = [];
   const usedPositions: number[] = [];
   const valuesArray = values[mode].filter((v, index) => {
@@ -84,14 +84,26 @@ const createRandomPos = (maxValue: number, usedPositions: number[]) => {
   return calculated;
 };
 
-export const createSinglePlayer = (
+export const createGame = (
   mode: 'numbers' | 'icons',
-  size: 4 | 6
-): GameSingle | null => {
+  size: 4 | 6,
+  playersCount: number
+): Game => {
+  const players: Player[] = [];
+
+  for (let i = 0; i < playersCount; i++) {
+    players.push({
+      playerID: i + 1,
+      table: createFields(mode, size),
+      isActive: false,
+      isWinning: false,
+      moves: 0,
+      pairs: 0,
+    });
+  }
   return {
-    table: createFields(mode, size),
-    roundState: 'first',
-    moves: 0,
-    elapsedTime: 0,
+    players,
+    mode,
+    size,
   };
 };

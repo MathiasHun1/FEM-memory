@@ -1,10 +1,15 @@
 import styles from '../../styles/components/MultyPlayer.module.scss';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import Table from '../Table';
 import { GameContext } from '../../contexts/GameContext';
 
-const MultyPlayer = () => {
+const MultiPlayer = () => {
   const { game } = useContext(GameContext);
+  const players = game.players;
+
+  useEffect(() => {
+    console.log(players);
+  }, [game]);
 
   return (
     <>
@@ -24,4 +29,4 @@ const MultyPlayer = () => {
   );
 };
 
-export default MultyPlayer;
+export default MultiPlayer;

@@ -5,16 +5,19 @@ export interface GameSingle {
   elapsedTime?: number;
 }
 
-export interface GameMulty {
+export interface Game {
   players: Player[];
+  mode: 'icons' | 'numbers';
+  size: 4 | 6;
 }
 
 export interface Player {
-  isActive: boolean;
+  playerID: number;
   table: Field[];
+  isActive: boolean;
+  moves: number;
   pairs: number;
   isWinning: boolean;
-  name: string;
 }
 
 export interface Field {
@@ -26,9 +29,12 @@ export interface Field {
 
 export type GameAction =
   | { type: 'initSingle'; payload: { mode: 'numbers' | 'icons'; size: 4 | 6 } }
-  | { type: 'setActive'; payload: { id: number } }
+  | { type: 'setFieldActive'; payload: { id: number } }
   | { type: 'setFound'; payload: { id: number } }
   | { type: 'incrementMoves' }
   | { type: 'setAllInactive' }
-  | { type: 'toggleRoundState' }
-  | { type: 'resetGame' };
+  | { type: 'resetGame' }
+  | {
+      type: 'initGame';
+      payload: { mode: 'numbers' | 'icons'; size: 4 | 6; players: number };
+    };

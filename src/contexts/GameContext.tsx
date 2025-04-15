@@ -1,41 +1,27 @@
 import { useReducer, createContext, ReactNode } from 'react';
-import { createSinglePlayer } from '../utils/gameboard';
-import { GameSingle, GameAction } from '../types/gameTypes';
+import { createGame } from '../utils/gameboard';
+import { Field, Game, GameAction, Player } from '../types/gameTypes';
 
-const gameReducer = (
-  state: GameSingle | null,
-  action: GameAction
-): GameSingle | null => {
+const gameReducer = (state: Game | null, action: GameAction): Game | null => {
   switch (action.type) {
-    case 'initSingle': {
+    case 'initGame': {
       const mode = action.payload.mode;
       const size = action.payload.size;
-      const newGame = createSinglePlayer(mode, size);
-      return newGame;
+      const players = action.payload.players;
+      const game = createGame(mode, size, players);
+      game.players[0].isActive = true;
+      return game;
     }
 
-    case 'initMulty': {
-      const mode = action.payload.mode;
-      const size = action.payload.size;
-      const playersCount = action.payload.players;
-      const newGame = createMultyPlayer(mode, size, playersCount);
-      return newGame;
-    }
-
-    case 'setActive': {
+    case 'setFieldActive': {
       if (!state) {
         throw new Error('Game state is null');
       }
-      const stateCopy = { ...state, table: [...state.table] };
       const id = action.payload.id;
-      const clickedField = stateCopy.table.find(
-        (field) => field.position == id
-      );
 
-      if (!clickedField) {
-        throw new Error('no field with this id');
-      }
-      clickedField.isActive = true;
+      const stateCopy = copyState(state);
+      const activePLayer = findActiveP(stateCopy);
+      setFieldToActive(id, activePLayer.table);
       return stateCopy;
     }
 
@@ -43,18 +29,11 @@ const gameReducer = (
       if (!state) {
         throw new Error('Game state is null');
       }
-      const stateCopy = { ...state, table: [...state.table] };
-
       const id = action.payload.id;
-      const clickedField = stateCopy.table.find(
-        (field) => field.position == id
-      );
 
-      if (!clickedField) {
-        throw new Error('no field with this id');
-      }
-      clickedField.isActive = false;
-      clickedField.isFound = true;
+      const stateCopy = copyState(state);
+      const activePLayer = findActiveP(stateCopy);
+      setFieldToFound(id, activePLayer.table);
       return stateCopy;
     }
 
@@ -63,8 +42,9 @@ const gameReducer = (
         throw new Error('Game state is null');
       }
 
-      const stateCopy = { ...state, table: [...state.table] };
-      stateCopy.moves++;
+      const stateCopy = copyState(state);
+      const activePLayer = findActiveP(stateCopy);
+      activePLayer.moves++;
       return stateCopy;
     }
 
@@ -72,24 +52,13 @@ const gameReducer = (
       if (!state) {
         throw new Error('Game state is null');
       }
-      const stateCopy = { ...state, table: [...state.table] };
-      stateCopy.table.forEach((field) => {
+      const stateCopy = copyState(state);
+      const activePlayer = findActiveP(stateCopy);
+      activePlayer.table.forEach((field) => {
         if (field.isActive) {
           field.isActive = false;
         }
       });
-      return stateCopy;
-    }
-    case 'toggleRoundState': {
-      if (!state) {
-        throw new Error('Game state is null');
-      }
-      const stateCopy = { ...state, table: [...state.table] };
-      if (stateCopy.roundState === 'first') {
-        stateCopy.roundState = 'last';
-      } else {
-        stateCopy.roundState = 'first';
-      }
       return stateCopy;
     }
 
@@ -97,14 +66,12 @@ const gameReducer = (
       if (!state) {
         throw new Error('Game state is null');
       }
-      const stateCopy = { ...state, table: [...state.table] };
-      stateCopy.table.forEach((field) => {
-        field.isActive = false;
-        field.isFound = false;
-      });
-      stateCopy.moves = 0;
-      stateCopy.roundState = 'first';
-      return stateCopy;
+
+      const { mode, size } = state;
+      const playersCount = state.players.length;
+      const newGame = createGame(mode, size, playersCount);
+      newGame.players[0].isActive = true;
+      return newGame;
     }
 
     default:
@@ -113,8 +80,37 @@ const gameReducer = (
   }
 };
 
+function findActiveP(state: Game): Player {
+  const player = state.players.find((p) => p.isActive);
+  if (!player) {
+    throw new Error('No player is active!');
+  }
+  return player;
+}
+
+function copyState(state: Game): Game {
+  return JSON.parse(JSON.stringify(state)) as Game;
+}
+
+function setFieldToActive(clickedID: number, table: Field[]): void {
+  const clickedField = table.find((field) => field.position == clickedID);
+  if (!clickedField) {
+    throw new Error('no field with this id');
+  }
+  clickedField.isActive = true;
+}
+
+function setFieldToFound(clickedID: number, table: Field[]): void {
+  const clickedField = table.find((field) => field.position == clickedID);
+  if (!clickedField) {
+    throw new Error('no field with this id');
+  }
+  clickedField.isActive = false;
+  clickedField.isFound = true;
+}
+
 interface GameContextType {
-  game: GameSingle | null;
+  game: Game | null;
   dispatch: React.Dispatch<GameAction>;
 }
 
