@@ -27,3 +27,29 @@
 .logo {
   width: 100px;
 }
+
+.buttons_wrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+.restart_button {
+  @include button-primary;
+  @media (max-width: $breakpoint-small) {
+    display: none;
+  }
+}
+
+.new_game_button {
+  @include button-secondary;
+  @media (max-width: $breakpoint-small) {
+    display: none;
+  }
+}
+
+.new_game_button_mobile {
+  @include button-primary;
+  @media (min-width: $breakpoint-small) {
+    display: none;
+  }
+}

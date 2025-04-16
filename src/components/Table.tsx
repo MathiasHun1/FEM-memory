@@ -26,7 +26,7 @@ const Table = ({ table, onClick }: Props) => {
       {table.map((field, index) => (
         <Field
           key={index}
-          id={index}
+          index={index}
           onClick={onClick}
           isActive={field.isActive}
           isFound={field.isFound}

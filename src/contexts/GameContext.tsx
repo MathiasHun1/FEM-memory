@@ -1,4 +1,4 @@
-import { useReducer, createContext, ReactNode } from 'react';
+import React, { useReducer, createContext, ReactNode, useState } from 'react';
 import { createGame } from '../utils/gameboard';
 import { Field, Game, GameAction, Player } from '../types/gameTypes';
 
@@ -21,7 +21,19 @@ const gameReducer = (state: Game | null, action: GameAction): Game | null => {
 
       const stateCopy = copyState(state);
       const activePLayer = findActiveP(stateCopy);
-      setFieldToActive(id, activePLayer.table);
+      const clickedField = getClickedField(id, activePLayer.table);
+
+      if (!clickedField) {
+        throw new Error('error finding the clicked field');
+      }
+
+      if (clickedField.isActive || clickedField.isFound) {
+        return stateCopy;
+      }
+
+      clickedField.isActive = true;
+      activePLayer.moves++;
+
       return stateCopy;
     }
 
@@ -34,6 +46,12 @@ const gameReducer = (state: Game | null, action: GameAction): Game | null => {
       const stateCopy = copyState(state);
       const activePLayer = findActiveP(stateCopy);
       setFieldToFound(id, activePLayer.table);
+
+      // set player's winning flag to true if every field is found
+      if (activePLayer.table.every((f) => f.isFound)) {
+        activePLayer.isWinning = true;
+        stateCopy.lastRound = true;
+      }
       return stateCopy;
     }
 
@@ -45,6 +63,17 @@ const gameReducer = (state: Game | null, action: GameAction): Game | null => {
       const stateCopy = copyState(state);
       const activePLayer = findActiveP(stateCopy);
       activePLayer.moves++;
+      return stateCopy;
+    }
+
+    case 'incrementPairs': {
+      if (!state) {
+        throw new Error('Game state is null');
+      }
+
+      const stateCopy = copyState(state);
+      const activePLayer = findActiveP(stateCopy);
+      activePLayer.pairs++;
       return stateCopy;
     }
 
@@ -62,6 +91,22 @@ const gameReducer = (state: Game | null, action: GameAction): Game | null => {
       return stateCopy;
     }
 
+    case 'changeActivePlayer': {
+      if (!state) {
+        throw new Error('Game state is null');
+      }
+      const stateCopy = copyState(state);
+      const activePlayerIndex = stateCopy.players.findIndex((p) => p.isActive);
+      const nextIndex =
+        activePlayerIndex === stateCopy.players.length - 1
+          ? 0
+          : activePlayerIndex + 1;
+
+      stateCopy.players[activePlayerIndex].isActive = false;
+      stateCopy.players[nextIndex].isActive = true;
+      return stateCopy;
+    }
+
     case 'resetGame': {
       if (!state) {
         throw new Error('Game state is null');
@@ -76,7 +121,6 @@ const gameReducer = (state: Game | null, action: GameAction): Game | null => {
 
     default:
       return null;
-      break;
   }
 };
 
@@ -92,12 +136,8 @@ function copyState(state: Game): Game {
   return JSON.parse(JSON.stringify(state)) as Game;
 }
 
-function setFieldToActive(clickedID: number, table: Field[]): void {
-  const clickedField = table.find((field) => field.position == clickedID);
-  if (!clickedField) {
-    throw new Error('no field with this id');
-  }
-  clickedField.isActive = true;
+function getClickedField(clickedID: number, table: Field[]) {
+  return table.find((field) => field.position == clickedID);
 }
 
 function setFieldToFound(clickedID: number, table: Field[]): void {
@@ -109,18 +149,23 @@ function setFieldToFound(clickedID: number, table: Field[]): void {
   clickedField.isFound = true;
 }
 
+// ------------- Context --------------- //
+
 interface GameContextType {
   game: Game | null;
   dispatch: React.Dispatch<GameAction>;
+  timerValue: number;
+  setTimerValue: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const GameContext = createContext<GameContextType | null>(null);
 
 export default function ContextProvider({ children }: { children: ReactNode }) {
   const [game, dispatch] = useReducer(gameReducer, null);
+  const [timerValue, setTimerValue] = useState(0);
 
   return (
-    <GameContext.Provider value={{ game, dispatch }}>
+    <GameContext.Provider value={{ game, dispatch, timerValue, setTimerValue }}>
       {children}
     </GameContext.Provider>
   );

@@ -1,16 +1,31 @@
 import styles from '../../styles/components/GameplayLayout.module.scss';
 import logo from '/images/logo-dark.svg';
 import { Outlet, useNavigate } from 'react-router';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { GameContext } from '../../contexts/GameContext';
+import GameOverModal from '../GameOverModal';
 
-const GameplayLayout = () => {
-  const { dispatch } = useContext(GameContext)!;
+interface Props {
+  winState: boolean;
+  setWinState: React.Dispatch<React.SetStateAction<boolean>>;
+  setGameStarted: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const GameplayLayout = ({ winState, setWinState, setGameStarted }: Props) => {
+  const { dispatch, setTimerValue } = useContext(GameContext)!;
   const navigate = useNavigate();
 
   const handleRestart = () => {
     dispatch({ type: 'resetGame' });
     navigate('/menu');
+    setGameStarted(false);
+    setTimerValue(0);
+  };
+
+  const handleReset = () => {
+    dispatch({ type: 'resetGame' });
+    setGameStarted(false);
+    setTimerValue(0);
   };
 
   return (
@@ -20,15 +35,27 @@ const GameplayLayout = () => {
           <img src={logo} alt="" />
         </div>
 
-        <div>
-          <button onClick={() => dispatch({ type: 'resetGame' })}>reset</button>
-          <button onClick={handleRestart}>restart</button>
+        <div className={styles.buttons_wrapper}>
+          <button className={styles.restart_button} onClick={handleReset}>
+            Restart
+          </button>
+          <button className={styles.new_game_button} onClick={handleRestart}>
+            New Game
+          </button>
+
+          <button
+            className={styles.new_game_button_mobile}
+            onClick={handleRestart}
+          >
+            Menu
+          </button>
         </div>
       </header>
 
       <main className={styles.main}>
         <Outlet />
       </main>
+      {winState && <GameOverModal setWinState={setWinState} />}
     </div>
   );
 };

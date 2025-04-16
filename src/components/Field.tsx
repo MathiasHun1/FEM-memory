@@ -4,11 +4,11 @@ interface Props {
   isActive: boolean;
   isFound: boolean;
   value: string | number;
-  id: number;
+  index: number;
   onClick: (e: React.MouseEvent<HTMLSpanElement>) => void;
 }
 
-const Field = ({ isActive, isFound, value, id, onClick }: Props) => {
+const Field = ({ isActive, isFound, value, index, onClick }: Props) => {
   const style = `${styles.field} ${isActive ? styles.active : ''} ${
     isFound ? styles.found : ''
   }`;
@@ -22,7 +22,7 @@ const Field = ({ isActive, isFound, value, id, onClick }: Props) => {
   };
 
   return (
-    <span className={style} data-id={id} onClick={onClick}>
+    <span className={style} data-id={index} onClick={onClick}>
       {isActive || isFound ? renderValue() : ''}
     </span>
   );

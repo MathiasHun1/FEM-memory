@@ -9,6 +9,7 @@ export interface Game {
   players: Player[];
   mode: 'icons' | 'numbers';
   size: 4 | 6;
+  lastRound: boolean;
 }
 
 export interface Player {
@@ -32,9 +33,11 @@ export type GameAction =
   | { type: 'setFieldActive'; payload: { id: number } }
   | { type: 'setFound'; payload: { id: number } }
   | { type: 'incrementMoves' }
+  | { type: 'incrementPairs' }
   | { type: 'setAllInactive' }
   | { type: 'resetGame' }
   | {
       type: 'initGame';
       payload: { mode: 'numbers' | 'icons'; size: 4 | 6; players: number };
-    };
+    }
+  | { type: 'changeActivePlayer' };

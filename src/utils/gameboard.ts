@@ -105,5 +105,6 @@ export const createGame = (
     players,
     mode,
     size,
+    lastRound: false,
   };
 };

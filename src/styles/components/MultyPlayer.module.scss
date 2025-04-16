@@ -1,0 +1,44 @@
+@use '../abstractions' as *;
+
+.meta_wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 2rem;
+}
+
+.meta_element {
+  background-color: hsl(var(--clr-greyish-blue-100));
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding-block: 10px;
+  padding-inline: 24px;
+  border-radius: 5px;
+  justify-content: center;
+
+  &_active {
+    @extend .meta_element;
+    background-color: hsl(var(--clr-orange-500));
+    position: relative;
+  }
+
+  &_active:after {
+    position: absolute;
+    content: '';
+    width: 15px;
+    height: 15px;
+    background-color: inherit;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
+  }
+
+  @media (min-width: $breakpoint-small) {
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 1;
+    gap: 2rem;
+    max-width: 25%;
+  }
+}

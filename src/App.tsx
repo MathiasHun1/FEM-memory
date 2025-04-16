@@ -8,6 +8,8 @@ import MultiPlayer from './components/Pages/MultiPlayer';
 
 function App() {
   const [size, setSize] = useState<4 | 6>(4);
+  const [winState, setWinState] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
 
   return (
     <>
@@ -18,9 +20,29 @@ function App() {
           element={<GameMenu size={size} setSize={setSize} />}
         />
         <Route path="playing">
-          <Route element={<GameplayLayout />}>
-            <Route path="singleplayer" element={<SinglePlayer />} />
-            <Route path="multiplayer" element={<MultiPlayer />} />
+          <Route
+            element={
+              <GameplayLayout
+                winState={winState}
+                setWinState={setWinState}
+                setGameStarted={setGameStarted}
+              />
+            }
+          >
+            <Route
+              path="singleplayer"
+              element={
+                <SinglePlayer
+                  setWinState={setWinState}
+                  gameStarted={gameStarted}
+                  setGameStarted={setGameStarted}
+                />
+              }
+            />
+            <Route
+              path="multiplayer"
+              element={<MultiPlayer setWinState={setWinState} />}
+            />
           </Route>
         </Route>
       </Routes>
