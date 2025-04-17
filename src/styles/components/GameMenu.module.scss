@@ -2,6 +2,7 @@
 
 .container {
   height: var(--app-height);
+  overflow: hidden;
   background-color: hsl(var(--clr-blue-900));
   display: grid;
   grid-template-rows: 15% 85%;
