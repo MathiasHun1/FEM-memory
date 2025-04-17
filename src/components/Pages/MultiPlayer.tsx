@@ -59,6 +59,10 @@ const MultiPlayer = ({ setWinState }: Props) => {
   }
 
   function handleClick(e: React.MouseEvent<HTMLSpanElement>) {
+    const activeFields = activePlayer.table.filter((field) => field.isActive);
+    if (activeFields.length >= 2) {
+      return;
+    }
     const target = e.currentTarget as HTMLSpanElement;
     const position = Number(target.dataset.id);
     dispatch({ type: 'setFieldActive', payload: { id: position } });

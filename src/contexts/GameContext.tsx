@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useReducer, createContext, ReactNode, useState } from 'react';
 import { createGame } from '../utils/gameboard';
 import { Field, Game, GameAction, Player } from '../types/gameTypes';

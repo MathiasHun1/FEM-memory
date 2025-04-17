@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styles from '../styles/components/GameOverModal.module.scss';
 import { GameContext } from '../contexts/GameContext';
 import { useNavigate } from 'react-router';
@@ -12,18 +12,28 @@ const GameOverModal = ({ setWinState }: Props) => {
   const { game, dispatch, timerValue, setTimerValue } =
     useContext(GameContext)!;
   const navigate = useNavigate();
-  if (!game) {
-    throw new Error('game is null');
-  }
-  const isSingle = game.players.length === 1;
+
+  useEffect(() => {
+    if (!game) {
+      navigate('/menu');
+    }
+  }, [game]);
+
+  const isSingle = game?.players.length === 1;
   const isMulti = !isSingle;
   const isTie = isMulti && checkIsTie();
 
   function getWinningPlayer() {
-    return game?.players.find((p) => p.isWinning);
+    if (!game) {
+      return;
+    }
+    return game.players.find((p) => p.isWinning);
   }
 
   function checkIsTie() {
+    if (!game) {
+      return;
+    }
     return game.players.filter((p) => p.isWinning).length > 1;
   }
 
@@ -60,7 +70,7 @@ const GameOverModal = ({ setWinState }: Props) => {
           )}
 
           {isMulti &&
-            game.players.map((p) => (
+            game?.players.map((p) => (
               <li
                 key={p.playerID}
                 className={`${

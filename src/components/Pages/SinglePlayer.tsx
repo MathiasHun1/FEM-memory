@@ -48,10 +48,6 @@ const SinglePlayer = ({ setWinState, gameStarted, setGameStarted }: Props) => {
     };
   }, [gameStarted]);
 
-  useEffect(() => {
-    console.log(timerValue);
-  }, [timerValue]);
-
   function checkMatch() {
     if (!player) return;
 
@@ -83,9 +79,17 @@ const SinglePlayer = ({ setWinState, gameStarted, setGameStarted }: Props) => {
   }
 
   function handleClick(e: React.MouseEvent<HTMLSpanElement>) {
+    if (!player) {
+      return;
+    }
     // set game-running flag on first click
     if (!gameStarted) {
       setGameStarted(true);
+    }
+    // not allow to activate more than 2 fields
+    const activeFields = player.table.filter((field) => field.isActive);
+    if (activeFields.length === 2) {
+      return;
     }
 
     const target = e.currentTarget as HTMLSpanElement;
