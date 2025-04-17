@@ -15,7 +15,7 @@ const Field = ({ isActive, isFound, value, index, onClick }: Props) => {
 
   const renderValue = () => {
     if (typeof value === 'number') {
-      return value;
+      return <span>{value}</span>;
     } else {
       return <img src={value} alt="" />;
     }
