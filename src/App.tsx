@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import GameMenu from './components/Pages/GameMenu';
 import SinglePlayer from './components/Pages/SinglePlayer';
@@ -10,6 +10,22 @@ function App() {
   const [size, setSize] = useState<4 | 6>(4);
   const [winState, setWinState] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+
+  useEffect(() => {
+    function setHeight() {
+      document.documentElement.style.setProperty(
+        '--app-height',
+        `${window.innerHeight}px`
+      );
+    }
+
+    setHeight();
+    window.addEventListener('resize', setHeight);
+
+    return () => {
+      window.addEventListener('resize', setHeight);
+    };
+  }, []);
 
   return (
     <>

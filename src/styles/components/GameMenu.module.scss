@@ -1,7 +1,7 @@
 @use '../abstractions' as *;
 
 .container {
-  height: 100%;
+  height: var(--app-height);
   background-color: hsl(var(--clr-blue-900));
   display: grid;
   grid-template-rows: 15% 85%;
