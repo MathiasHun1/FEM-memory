@@ -4,6 +4,8 @@ html,
 body,
 #root {
   height: var(--app-height);
+  overflow: hidden;
+  position: fixed;
 }
 
 #root {
