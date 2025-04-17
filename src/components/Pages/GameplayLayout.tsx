@@ -3,6 +3,8 @@ import logo from '/images/logo-dark.svg';
 import { Outlet, useNavigate } from 'react-router';
 import React, { useContext } from 'react';
 import { GameContext } from '../../contexts/GameContext';
+import useAppHeight from '../../hooks/useAppHeight';
+
 import GameOverModal from '../GameOverModal';
 
 interface Props {
@@ -14,6 +16,7 @@ interface Props {
 const GameplayLayout = ({ winState, setWinState, setGameStarted }: Props) => {
   const { dispatch, setTimerValue } = useContext(GameContext)!;
   const navigate = useNavigate();
+  useAppHeight();
 
   const handleRestart = () => {
     dispatch({ type: 'resetGame' });
