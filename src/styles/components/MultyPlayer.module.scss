@@ -9,21 +9,24 @@
 
 .meta_element {
   background-color: hsl(var(--clr-greyish-blue-100));
+  color: hsl(var(--clr-greyish-blue-500));
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   padding-block: 10px;
   padding-inline: 24px;
   border-radius: 5px;
-  justify-content: center;
 
   &_active {
     @extend .meta_element;
     background-color: hsl(var(--clr-orange-500));
+    color: hsl(var(--clr-slate-100));
     position: relative;
   }
 
-  &_active:after {
+  &_active:before {
     position: absolute;
     content: '';
     width: 15px;
@@ -34,6 +37,24 @@
     transform: translateX(-50%) translateY(-50%) rotate(45deg);
   }
 
+  &_active:after {
+    position: absolute;
+    content: 'CURRENT TURN';
+    background-color: transparent;
+    color: hsl(var(--clr-blue-900));
+    bottom: -2rem;
+    left: 50%;
+    font-size: calc(13rem / 16);
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-wrap: nowrap;
+    transform: translateX(-50%);
+    display: none;
+    @media (min-width: $breakpoint-small) {
+      display: block;
+    }
+  }
+
   @media (min-width: $breakpoint-small) {
     flex-direction: row;
     justify-content: space-between;
@@ -41,4 +62,27 @@
     gap: 2rem;
     max-width: 25%;
   }
+}
+
+.name_small_screen {
+  @media (min-width: $breakpoint-small) {
+    display: none;
+  }
+}
+
+.name_big_screen {
+  display: none;
+  @media (min-width: $breakpoint-small) {
+    display: block;
+    height: min-content;
+  }
+}
+
+.pairs {
+  color: hsl(var(--clr-blue-900));
+  font-size: var(--fs-h2);
+}
+
+.meta_element_active > .pairs {
+  color: hsl(var(--clr-slate-100));
 }

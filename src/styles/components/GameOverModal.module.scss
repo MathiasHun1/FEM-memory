@@ -23,6 +23,12 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  @media (min-width: $breakpoint-small) {
+    padding-inline: 56px;
+    padding-bottom: 6rem;
+    gap: 3rem;
+  }
 }
 
 .list {
@@ -33,6 +39,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  @media (min-width: $breakpoint-small) {
+    gap: 1rem;
+  }
 }
 
 .list_item {
@@ -79,12 +88,17 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  @media (min-width: $breakpoint-small) {
+    flex-direction: row;
+  }
 }
 
 .restart_button {
   @include button-primary;
+  flex: 1;
 }
 
 .new_game_button {
   @include button-secondary;
+  flex: 1;
 }

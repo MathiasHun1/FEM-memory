@@ -80,8 +80,9 @@ const MultiPlayer = ({ setWinState }: Props) => {
               p.isActive ? styles.meta_element_active : styles.meta_element
             }`}
           >
-            <span>P{p.playerID}</span>
-            <span>{p.pairs}</span>
+            <span className={styles.name_small_screen}>P{p.playerID}</span>
+            <span className={styles.name_big_screen}>Player{p.playerID}</span>
+            <span className={styles.pairs}>{p.pairs}</span>
           </div>
         ))}
       </div>
