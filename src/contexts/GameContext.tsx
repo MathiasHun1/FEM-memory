@@ -33,7 +33,6 @@ const gameReducer = (state: Game | null, action: GameAction): Game | null => {
       }
 
       clickedField.isActive = true;
-      activePLayer.moves++;
 
       return stateCopy;
     }
@@ -63,7 +62,7 @@ const gameReducer = (state: Game | null, action: GameAction): Game | null => {
 
       const stateCopy = copyState(state);
       const activePLayer = findActiveP(stateCopy);
-      activePLayer.moves++;
+      activePLayer.moves += 1;
       return stateCopy;
     }
 

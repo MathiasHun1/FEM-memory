@@ -56,6 +56,7 @@ const SinglePlayer = ({ setWinState, gameStarted, setGameStarted }: Props) => {
       if (activeFields[0].value !== activeFields[1].value) {
         setTimeout(() => {
           dispatch({ type: 'setAllInactive' });
+          dispatch({ type: 'incrementMoves' });
         }, 500);
       }
 
@@ -63,6 +64,7 @@ const SinglePlayer = ({ setWinState, gameStarted, setGameStarted }: Props) => {
         activeFields.map((field) =>
           dispatch({ type: 'setFound', payload: { id: field.position } })
         );
+        dispatch({ type: 'incrementMoves' });
       }
     }
   }
