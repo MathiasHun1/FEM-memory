@@ -3,6 +3,7 @@ import styles from '../../styles/components/GameMenu.module.scss';
 import logo from '/images/logo-white.svg';
 import { useNavigate } from 'react-router';
 import { GameContext, LanguageContext } from '../../contexts/GameContext';
+import { motion } from 'motion/react';
 
 import LanguagePicker from '../LanguagePicker';
 
@@ -36,7 +37,12 @@ const GameMenu = ({ size, setSize }: Props) => {
   };
 
   return (
-    <div className={styles.container}>
+    <motion.div
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className={styles.container}
+    >
+      <LanguagePicker />
       <header className={styles.header}>
         <div>
           <img src={logo} alt="" />
@@ -44,8 +50,12 @@ const GameMenu = ({ size, setSize }: Props) => {
       </header>
 
       <main className={styles.main}>
-        <div className={styles.card}>
-          <LanguagePicker />
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className={styles.card}
+        >
           <div className={styles.input_group}>
             <label htmlFor="" className={styles.label}>
               {language.menu.titleMode}
@@ -141,9 +151,9 @@ const GameMenu = ({ size, setSize }: Props) => {
           <button className={styles.button_start} onClick={handleGameStart}>
             {language.menu.startBtn}
           </button>
-        </div>
+        </motion.div>
       </main>
-    </div>
+    </motion.div>
   );
 };
 

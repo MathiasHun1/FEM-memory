@@ -1,6 +1,7 @@
-import { Routes, Route, Navigate } from 'react-router';
-import { useState } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router';
+import { ReactNode, useState } from 'react';
 import useAppHeight from './hooks/useAppHeight';
+import { AnimatePresence, motion } from 'motion/react';
 
 import GameMenu from './components/Pages/GameMenu';
 import SinglePlayer from './components/Pages/SinglePlayer';
@@ -11,12 +12,13 @@ function App() {
   const [size, setSize] = useState<4 | 6>(4);
   const [winState, setWinState] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const location = useLocation();
 
   useAppHeight();
 
   return (
-    <>
-      <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Navigate to="/menu" />} />
         <Route
           path="menu"
@@ -25,11 +27,13 @@ function App() {
         <Route path="playing">
           <Route
             element={
-              <GameplayLayout
-                winState={winState}
-                setWinState={setWinState}
-                setGameStarted={setGameStarted}
-              />
+              <PageWrapper>
+                <GameplayLayout
+                  winState={winState}
+                  setWinState={setWinState}
+                  setGameStarted={setGameStarted}
+                />
+              </PageWrapper>
             }
           >
             <Route
@@ -49,8 +53,20 @@ function App() {
           </Route>
         </Route>
       </Routes>
-    </>
+    </AnimatePresence>
   );
 }
+
+const PageWrapper = ({ children }: { children: ReactNode }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 export default App;

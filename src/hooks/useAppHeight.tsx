@@ -1,3 +1,4 @@
+// This hook is used to measre the window height, using to eliminate "ghost-scrolling" on mobiles
 import { useEffect } from 'react';
 
 export default function useAppHeight() {

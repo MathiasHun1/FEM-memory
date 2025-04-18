@@ -28,7 +28,7 @@ export const languages = {
         timeResult: 'Time Elapsed',
         movesResult: 'Moves Taken',
       },
-      multiPlayer: {
+      multiPLayer: {
         wins: 'Wins!',
         player: 'Player',
         tie: 'Its a tie!',
