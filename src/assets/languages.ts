@@ -28,9 +28,9 @@ export const languages = {
         timeResult: 'Time Elapsed',
         movesResult: 'Moves Taken',
       },
-      multiPLayer: {
-        player: 'Player',
+      multiPlayer: {
         wins: 'Wins!',
+        player: 'Player',
         tie: 'Its a tie!',
         subText: 'Game over! Here are the results...',
         pairs: 'Pairs',
@@ -69,7 +69,7 @@ export const languages = {
         timeResult: 'Eltelt idő',
         movesResult: 'Lépések száma',
       },
-      multiPLayer: {
+      multiPlayer: {
         player: 'Játékos',
         wins: 'Nyert!',
         tie: 'Döntentlen!',
