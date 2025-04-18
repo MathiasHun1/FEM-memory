@@ -2,7 +2,7 @@ import styles from '../../styles/components/GameplayLayout.module.scss';
 import logo from '/images/logo-dark.svg';
 import { Outlet, useNavigate } from 'react-router';
 import React, { useContext } from 'react';
-import { GameContext } from '../../contexts/GameContext';
+import { GameContext, LanguageContext } from '../../contexts/GameContext';
 import useAppHeight from '../../hooks/useAppHeight';
 
 import GameOverModal from '../GameOverModal';
@@ -15,6 +15,7 @@ interface Props {
 
 const GameplayLayout = ({ winState, setWinState, setGameStarted }: Props) => {
   const { dispatch, setTimerValue } = useContext(GameContext)!;
+  const { language } = useContext(LanguageContext)!;
   const navigate = useNavigate();
   useAppHeight();
 
@@ -40,10 +41,10 @@ const GameplayLayout = ({ winState, setWinState, setGameStarted }: Props) => {
 
         <div className={styles.buttons_wrapper}>
           <button className={styles.restart_button} onClick={handleReset}>
-            Restart
+            {language.game.header.restartBtn}
           </button>
           <button className={styles.new_game_button} onClick={handleRestart}>
-            New Game
+            {language.game.header.newGameBtn}
           </button>
 
           <button

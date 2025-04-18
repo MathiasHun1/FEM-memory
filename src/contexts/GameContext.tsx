@@ -2,6 +2,8 @@
 import React, { useReducer, createContext, ReactNode, useState } from 'react';
 import { createGame } from '../utils/gameboard';
 import { Field, Game, GameAction, Player } from '../types/gameTypes';
+import { languages } from '../assets/languages';
+import { Language } from '../types/langTypes';
 
 const gameReducer = (state: Game | null, action: GameAction): Game | null => {
   switch (action.type) {
@@ -158,15 +160,26 @@ interface GameContextType {
   setTimerValue: React.Dispatch<React.SetStateAction<number>>;
 }
 
+interface LanguageContextType {
+  language: Language;
+  setLanguage: React.Dispatch<React.SetStateAction<Language>>;
+}
+
 export const GameContext = createContext<GameContextType | null>(null);
+export const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export default function ContextProvider({ children }: { children: ReactNode }) {
   const [game, dispatch] = useReducer(gameReducer, null);
   const [timerValue, setTimerValue] = useState(0);
+  const [language, setLanguage] = useState<Language>(languages.hun);
 
   return (
-    <GameContext.Provider value={{ game, dispatch, timerValue, setTimerValue }}>
-      {children}
-    </GameContext.Provider>
+    <LanguageContext.Provider value={{ language, setLanguage }}>
+      <GameContext.Provider
+        value={{ game, dispatch, timerValue, setTimerValue }}
+      >
+        {children}
+      </GameContext.Provider>
+    </LanguageContext.Provider>
   );
 }

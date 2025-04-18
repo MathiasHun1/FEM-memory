@@ -1,13 +1,14 @@
 import styles from '../../styles/components/MultyPlayer.module.scss';
 import React, { useContext, useEffect } from 'react';
 import Table from '../Table';
-import { GameContext } from '../../contexts/GameContext';
+import { GameContext, LanguageContext } from '../../contexts/GameContext';
 
 interface Props {
   setWinState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MultiPlayer = ({ setWinState }: Props) => {
+  const { language } = useContext(LanguageContext)!;
   const { game, dispatch } = useContext(GameContext)!;
   const players = game?.players;
   const activePlayer = getActivePlayer();
@@ -81,7 +82,10 @@ const MultiPlayer = ({ setWinState }: Props) => {
             }`}
           >
             <span className={styles.name_small_screen}>P{p.playerID}</span>
-            <span className={styles.name_big_screen}>Player{p.playerID}</span>
+            <span className={styles.name_big_screen}>
+              {language.game.player.playerName}
+              {p.playerID}
+            </span>
             <span className={styles.pairs}>{p.pairs}</span>
           </div>
         ))}

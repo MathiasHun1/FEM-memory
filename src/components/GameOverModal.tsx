@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import styles from '../styles/components/GameOverModal.module.scss';
-import { GameContext } from '../contexts/GameContext';
+import { GameContext, LanguageContext } from '../contexts/GameContext';
 import { useNavigate } from 'react-router';
 import { formatTimeValue } from '../utils/helpers';
 
@@ -9,6 +9,7 @@ interface Props {
 }
 
 const GameOverModal = ({ setWinState }: Props) => {
+  const { language } = useContext(LanguageContext)!;
   const { game, dispatch, timerValue, setTimerValue } =
     useContext(GameContext)!;
   const navigate = useNavigate();
@@ -42,16 +43,20 @@ const GameOverModal = ({ setWinState }: Props) => {
       <div className={styles.card}>
         <header className={styles.header}>
           <h1 className={styles.title}>
-            {isSingle && <> You did it!</>}
+            {isSingle && <> {language.gameOver.singlePlayer.title}</>}
             {isMulti && !isTie && (
-              <>Player {getWinningPlayer()?.playerID} Wins!</>
+              <>
+                {language.gameOver.multiPlayer.player}{' '}
+                {getWinningPlayer()?.playerID}{' '}
+                {language.gameOver.multiPlayer.wins}
+              </>
             )}
-            {isMulti && isTie && <>It's a tie!</>}
+            {isMulti && isTie && <>{language.gameOver.multiPlayer.tie}</>}
           </h1>
 
           <p className={styles.sub_text}>
-            {isSingle && <>Game over! Here's how you got on...</>}
-            {isMulti && <>Game over! Here are the results...</>}
+            {isSingle && <>{language.gameOver.singlePlayer.subText}</>}
+            {isMulti && <>{language.gameOver.multiPlayer.subText}</>}
           </p>
         </header>
 
@@ -59,11 +64,11 @@ const GameOverModal = ({ setWinState }: Props) => {
           {isSingle && (
             <>
               <li className={styles.list_item}>
-                <span>Time Elapsed</span>
+                <span>{language.gameOver.singlePlayer.timeResult}</span>
                 <span>{formatTimeValue(timerValue)}</span>
               </li>
               <li className={styles.list_item}>
-                <span>Moves Taken</span>
+                <span>{language.gameOver.singlePlayer.movesResult}</span>
                 <span>{game.players[0].moves}</span>
               </li>
             </>
@@ -77,8 +82,12 @@ const GameOverModal = ({ setWinState }: Props) => {
                   p.isWinning ? styles.list_item_winner : styles.list_item
                 }`}
               >
-                <span>Player {p.playerID}</span>
-                <span>{p.pairs} Pairs</span>
+                <span>
+                  {language.gameOver.multiPlayer.player} {p.playerID}
+                </span>
+                <span>
+                  {p.pairs} {language.gameOver.multiPlayer.pairs}
+                </span>
               </li>
             ))}
         </ul>
@@ -91,7 +100,7 @@ const GameOverModal = ({ setWinState }: Props) => {
               setTimerValue(0);
             }}
           >
-            Restart
+            {language.gameOver.restartBtn}
           </button>
           <button
             className={styles.new_game_button}
@@ -101,7 +110,7 @@ const GameOverModal = ({ setWinState }: Props) => {
               setWinState(false);
             }}
           >
-            Setup New Game
+            {language.gameOver.newGameBtn}
           </button>
         </div>
       </div>

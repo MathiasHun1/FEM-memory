@@ -2,7 +2,9 @@ import React, { useState, useContext } from 'react';
 import styles from '../../styles/components/GameMenu.module.scss';
 import logo from '/images/logo-white.svg';
 import { useNavigate } from 'react-router';
-import { GameContext } from '../../contexts/GameContext';
+import { GameContext, LanguageContext } from '../../contexts/GameContext';
+
+import LanguagePicker from '../LanguagePicker';
 
 interface Props {
   size: 4 | 6;
@@ -14,6 +16,7 @@ const GameMenu = ({ size, setSize }: Props) => {
   const [players, setPlayers] = useState(1);
   const navigate = useNavigate();
   const { dispatch } = useContext(GameContext)!;
+  const { language } = useContext(LanguageContext)!;
 
   const handlePlayerCount = (e: React.MouseEvent<HTMLButtonElement>) => {
     const button = e.target as HTMLButtonElement;
@@ -42,9 +45,10 @@ const GameMenu = ({ size, setSize }: Props) => {
 
       <main className={styles.main}>
         <div className={styles.card}>
+          <LanguagePicker />
           <div className={styles.input_group}>
             <label htmlFor="" className={styles.label}>
-              Select mode
+              {language.menu.titleMode}
             </label>
             <div className={styles.input_wrapper}>
               <button
@@ -53,7 +57,7 @@ const GameMenu = ({ size, setSize }: Props) => {
                 }`}
                 onClick={() => setMode('numbers')}
               >
-                Numbers
+                {language.menu.modeNum}
               </button>
               <button
                 className={`${styles.button_selection} ${
@@ -61,14 +65,14 @@ const GameMenu = ({ size, setSize }: Props) => {
                 }`}
                 onClick={() => setMode('icons')}
               >
-                Icons
+                {language.menu.modeIcon}
               </button>
             </div>
           </div>
 
           <div className={styles.input_group}>
             <label htmlFor="" className={styles.label}>
-              Number of Players
+              {language.menu.titlePlayers}
             </label>
             <div className={styles.input_wrapper}>
               <button
@@ -112,7 +116,7 @@ const GameMenu = ({ size, setSize }: Props) => {
 
           <div className={styles.input_group}>
             <label htmlFor="" className={styles.label}>
-              Grid Size
+              {language.menu.titleSize}
             </label>
             <div className={styles.input_wrapper}>
               <button
@@ -135,7 +139,7 @@ const GameMenu = ({ size, setSize }: Props) => {
           </div>
 
           <button className={styles.button_start} onClick={handleGameStart}>
-            Start Game
+            {language.menu.startBtn}
           </button>
         </div>
       </main>

@@ -1,4 +1,4 @@
-import { GameContext } from '../../contexts/GameContext';
+import { GameContext, LanguageContext } from '../../contexts/GameContext';
 import styles from '../../styles/components/SinglePlayer.module.scss';
 import { useContext, useEffect, useRef } from 'react';
 import Table from '../Table';
@@ -13,6 +13,7 @@ interface Props {
 
 const SinglePlayer = ({ setWinState, gameStarted, setGameStarted }: Props) => {
   const timerRef = useRef<number | null>(null);
+  const { language } = useContext(LanguageContext)!;
 
   const { game, dispatch, timerValue, setTimerValue } =
     useContext(GameContext)!;
@@ -107,11 +108,11 @@ const SinglePlayer = ({ setWinState, gameStarted, setGameStarted }: Props) => {
 
       <div className={styles.meta_wrapper}>
         <div className={styles.meta_element}>
-          <h3 className={styles.meta_text}>Time</h3>
+          <h3 className={styles.meta_text}>{language.game.player.time}</h3>
           <p className={styles.meta_value}>{formatTimeValue(timerValue)}</p>
         </div>
         <div className={styles.meta_element}>
-          <h3 className={styles.meta_text}>Moves</h3>
+          <h3 className={styles.meta_text}>{language.game.player.moves}</h3>
           <p className={styles.meta_value}>{player.moves}</p>
         </div>
       </div>
